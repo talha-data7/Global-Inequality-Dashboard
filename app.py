@@ -8,7 +8,8 @@ st.title("🌍 Global Inequality Dashboard")
 st.markdown("### An Interactive Analysis by Muhammad Talha Ateeq")
 
 # Load data
-df = pd.read_csv('world_happiness.csv').dropna()
+url = 'https://raw.githubusercontent.com/talha-data7/Global-Inequality-Dashboard/main/world_happiness.csv'
+df = pd.read_csv(url)
 
 # Sidebar filter
 st.sidebar.header("Filter Options")
