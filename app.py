@@ -1,4 +1,4 @@
-import streamlit as st
+ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
@@ -12,25 +12,27 @@ st.markdown("An Interactive Analysis by Muhammad Talha Ateeq")
 @st.cache_data
 def load_data():
     url = 'https://raw.githubusercontent.com/talha-data7/Global-Inequality-Dashboard/main/world_happiness.csv'
-    # on_bad_lines='skip' fixes the ParserError
     df = pd.read_csv(url, on_bad_lines='skip')
     return df
 
 try:
     df = load_data()
 
+    # Automatically find the column that contains the word "Score"
+    score_col = [col for col in df.columns if 'Score' in col][0]
+
     # Create the Slider
     score_filter = st.slider("Minimum Happiness Score", 0.0, 10.0, 5.0)
     
-    # Filter the data based on the slider
-    filtered_df = df[df['Score'] >= score_filter]
+    # Filter the data based on the slider using the auto-detected column
+    filtered_df = df[df[score_col] >= score_filter]
 
     # Create the scatter plot
     fig = px.scatter(
         filtered_df,
         x="GDP per capita",
         y="Healthy life expectancy",
-        color="Score",
+        color=score_col,
         hover_name="Country or region",
         title="GDP per Capita vs Healthy Life Expectancy",
         template="plotly_dark"
